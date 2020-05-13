@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# IMPOSTAZIONE DELLA TIMEZONE
+sudo timedatectl set-timezone Europe/Zurich
+
 # AGGIORNAMENTO DEI SOFTWARE
 sudo apt update -y
 sudo apt dist-upgrade -y

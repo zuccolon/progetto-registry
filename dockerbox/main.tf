@@ -1,7 +1,7 @@
 // CONFIGURAZIONE PROVIDER
 provider "google" {
   credentials = file("key.json")
-  project     = "dockerbox"
+  project     = "dockerbox-277106"
   region      = "us-west1"
 }
 
@@ -21,7 +21,7 @@ resource "google_compute_firewall" "default" {
   network = "${google_compute_network.vpc_network.id}"
   allow {
     protocol = "tcp"
-    ports    = ["80","22","5050","443"]
+    ports    = ["80","443","22","5050","8080"]
   }
 }
 
