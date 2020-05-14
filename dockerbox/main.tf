@@ -21,7 +21,7 @@ resource "google_compute_firewall" "default" {
   network = "${google_compute_network.vpc_network.id}"
   allow {
     protocol = "tcp"
-    ports    = ["80","443","22","5050","8080"]
+    ports    = ["80","443","22","5050","8080","8081"]
   }
 }
 
