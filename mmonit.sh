@@ -7,12 +7,9 @@ apt-get install monit -y
 systemctl start monit
 systemctl enable monit
 
-# RIAVVIO IL SERVIZIO MONIT
-systemctl restart monit
-
 # FORMATTO IL FILE DI CONFIGURAZIONE
 sudo cat <<EOF > /etc/monit/monitrc
-set daemon 60 # check services at 2-minute intervals
+set daemon 60 # check services at 1-minute intervals
 set log /var/log/monit.log
 set idfile /var/lib/monit/id
 set statefile /var/lib/monit/state
@@ -22,11 +19,11 @@ set eventqueue
 include /etc/monit/conf.d/*
 include /etc/monit/conf-enabled/*
 
-set httpd port 8081 and
+set httpd port 8080 and
     allow admin:monit
 
 set mailserver 127.0.0.1
-set alert zuccolon@cscs.com
+set alert zuccolon@cscs.ch
 
 # REGOLE
 check system \$HOST
@@ -48,16 +45,18 @@ check system \$HOST
 check host dockerbox.ch with address dockerbox.ch
  if failed port 80 protocol http for 2 cycles then alert
 
-   check host dockerbox.ssl with address dockerbox.ch
-       if failed
-           port 443
-           protocol https
-           request "/users/sign_in"
-           status = 404
-       then alert
+ check host dockerbox
+   with address dockerbox.ch
+   if failed
+     host dockerbox.ch
+     port 443
+     type TCPSSL
+     protocol https
+   then alert
 
 EOF
 
 # CONTROLLO IL FILE E RIAVVIO IL SERVIZIO
 sudo monit -t
 systemctl restart monit
+echo "MMonit installato e fruibile alla porta 8080"
